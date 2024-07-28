@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background: url('{{ url_for('static', filename='images/Bg2.avif') }}') repeat;
+            animation: moveBackground 20s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            from {
+                transform: translate(0, 0);
+            }
+            to {
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #555555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+
+        .submit-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .submit-btn:hover {
+            background: #45a049;
+        }
+
+        .login-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+  
+        .login-container p {
+            display: inline;
+        }
+  
+        .login-link {
+            color: #4CAF50;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+  
+        .login-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="container">
+        <h2>Register</h2>
+        <form method="POST" action="{{ url_for('register') }}">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.email.label }}<br>
+                {{ form.email(size=32) }}
+            </div>
+            <div class="form-group">
+                {{ form.password.label }}<br>
+                {{ form.password(size=32) }}
+            </div>
+            <div class="form-group">
+                {{ form.confirm_password.label }}<br>
+                {{ form.confirm_password(size=32) }}
+            </div>
+            <div class="form-group">
+                {{ form.submit(class="submit-btn") }}
+            </div>
+        </form>
+        <div class="login-container">
+            <p>Already have an account?</p><a href="{{ url_for('login') }}" class="login-link">Login here</a>
+        </div>
+    </div>
+</body>
+</html>

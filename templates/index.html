@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Dream</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background: url('{{ url_for('static', filename='images/Bg2.avif') }}') repeat;
+            animation: moveBackground 20s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            from {
+                transform: translate(0, 0);
+            }
+            to {
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column; /* Changed to column to stack elements vertically */
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .file-input-wrapper {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px; /* Added margin bottom for spacing */
+        }
+
+        .file-input {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .processed-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .processed-image {
+            width: 300px; /* Adjusted to fixed width for consistency */
+            height: 300px; /* Set fixed height for uniform card size */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            background-color: #fff; /* Added background color for clarity */
+            padding: 10px;
+            margin: 10px; /* Added margin for spacing between images */
+            position: relative; /* Added relative positioning for absolute download link */
+        }
+
+        .processed-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensure the image covers the entire container */
+            border-radius: 10px;
+        }
+
+        .download-link {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: block;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .processed-image:hover .download-link {
+            opacity: 1;
+        }
+
+        .download-link:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="content">
+        <div class="file-input-wrapper">
+            <h1>Upload Your File</h1>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" class="file-input">
+                <br><br>
+                <input type="submit" value="Upload File">
+            </form>
+        </div>
+        <div class="processed-images">
+            {% for filename in filenames %}
+            <div class="processed-image">
+                <img src="{{ url_for('static', filename='processed/' + filename) }}" alt="{{ filename }}">
+                <a href="{{ url_for('download_image', filename=filename) }}" class="download-link" download>Download</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
